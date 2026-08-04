@@ -38,3 +38,8 @@
 - Choix : tests JUnit "à la main" en Given/When/Then (commentaires), pas de Cucumber.
 - Raison : Cucumber sert la communication avec des non-devs ; en solo il masque la friction de conception que je dois ressentir.
 - Coût accepté : je n'apprends pas l'outil maintenant (noté : à explorer quand JUnit sera solide).
+
+## D007 — Calculs dans le service, pas dans les objets
+- Choix : tout le calcul (prix de revient, valorisation…) va dans PortfolioService ; Position et Transaction restent de simples porteurs de données.
+- Raison : démarrage rapide, code volontairement "anémique" pour le refactorer ensuite.
+- Coût accepté : modèle anémique assumé ; à réinterroger au refactoring (le prix de revient pourrait remonter dans Position).
