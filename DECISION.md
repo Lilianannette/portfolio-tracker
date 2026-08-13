@@ -43,3 +43,23 @@
 - Choix : tout le calcul (prix de revient, valorisation…) va dans PortfolioService ; Position et Transaction restent de simples porteurs de données.
 - Raison : démarrage rapide, code volontairement "anémique" pour le refactorer ensuite.
 - Coût accepté : modèle anémique assumé ; à réinterroger au refactoring (le prix de revient pourrait remonter dans Position).
+
+## D008 — Une position peut avoir une quantité détenue de 0
+- Contexte : cas limite rencontré au test (division par zéro / NaN quand la quantité vaut 0).
+- Question : une position peut-elle avoir une quantité détenue de 0 ?
+- Réponse : oui, mais pas à la création (pas d'achat = pas de position). Le zéro apparaît après avoir tout vendu (la position garde ses transactions, mais quantité détenue = achetée − vendue = 0).
+- À gérer : les calculs qui divisent par la quantité doivent traiter ce cas (prix de revient sur une position soldée).
+- Coût accepté : un contrôle supplémentaire dans les calculs concernés (comportement précis à décider).
+
+## D009 — Pas de statut PENDING sur les transactions
+- Contexte : tenté d'ajouter une valeur PENDING à l'enum pour distinguer les actions détenues des actions vendues.
+- Options : (a) enum BUY/SELL/PENDING, (b) enum BUY/SELL seul et "détenu" calculé.
+- Choix : option (b), enum limité à BUY/SELL.
+- Raison : une transaction est un événement immuable (un achat ou une vente daté), pas un état. "Détenu vs vendu" n'est pas une propriété de la transaction mais un résultat de calcul (acheté − vendu) — c'est le cœur de la règle R3 (réalisé vs latent).
+- Coût accepté : il faut calculer la quantité détenue au lieu de la lire directement sur un statut.
+
+## D010 — Frais de courtage lissés sur la quantité totale (moyenne pondérée)
+- Contexte : comment les frais de courtage se répartissent dans le prix de revient unitaire.
+- Choix : tous les frais sont additionnés au coût total, puis divisés par la quantité totale (frais "lissés" sur toutes les actions).
+- Raison : cohérent avec la moyenne pondérée (D004) ; un seul prix de revient unitaire pour la position.
+- Coût accepté : une action d'un lot à frais élevés n'est pas distinguée d'une action à frais faibles. (En suivi par lot / FIFO — règle F, T2 — chaque lot garderait ses frais propres et donnerait des prix de revient distincts.)
