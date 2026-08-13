@@ -14,14 +14,20 @@ public class PortfolioService {
     }
 
     public double calculateValorisation(Position position) {
-        int quantityBuy = 0;
+        int quantityBought = 0;
+        int quantitySold = 0;
         double marketPrice = 95.0;
+        int quantityHeld = 0;
 
-        for (Transaction t : position.transactions ) {
-            if(t.type() == OperationType.PENDING) {
-                quantityBuy = quantityBuy + t.quantity();
+        for (Transaction t : position.transactions) {
+            if (t.type() == OperationType.BUY) {
+                quantityBought += t.quantity();
             }
+            if (t.type() == OperationType.SELL) {
+                quantitySold += t.quantity();
+            }
+            quantityHeld = quantityBought - quantitySold;
         }
-        return quantityBuy * marketPrice;
+        return quantityHeld * marketPrice;
     }
 }
