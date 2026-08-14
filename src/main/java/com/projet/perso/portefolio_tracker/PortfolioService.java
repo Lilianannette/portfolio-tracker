@@ -30,4 +30,23 @@ public class PortfolioService {
         }
         return quantityHeld * marketPrice;
     }
+
+    // Duplication
+    public double calculateLatenteGain(Position position) {
+        double currentPrice = 95;
+        int quantitySold = 0;
+        int quantityBought = 0;
+        int quantityHeld = 0;
+        double actualPrice = calculateCostPrice(position);
+        for (Transaction t : position.transactions) {
+            if (t.type() == OperationType.BUY) {
+                quantityBought += t.quantity();
+            }
+            if (t.type() == OperationType.SELL) {
+                quantitySold += t.quantity();
+            }
+            quantityHeld = quantityBought - quantitySold;
+        }
+        return quantityHeld * (currentPrice - actualPrice);
+    }
 }

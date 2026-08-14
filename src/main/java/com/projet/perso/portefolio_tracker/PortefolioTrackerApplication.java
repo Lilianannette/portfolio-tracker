@@ -9,8 +9,8 @@ import java.util.List;
 public class PortefolioTrackerApplication {
 
 	public static void main(String[] args) {
-		Transaction t1 = new Transaction("AAPL", 40, 100.0, 5.0, OperationType.BUY, LocalDate.now());
-		Transaction t2 = new Transaction("AAPL", 30, 200.0, 5.0, OperationType.SELL, LocalDate.now());
+		Transaction t1 = new Transaction("AAPL", 30, 75.0, 0.0, OperationType.BUY, LocalDate.now());
+		Transaction t2 = new Transaction("AAPL", 10, 140.0, 0.0, OperationType.SELL, LocalDate.now());
 		Position p = new Position();
 		p.ticker = "AAPL";
 		p.transactions = List.of(t1, t2);
@@ -18,5 +18,6 @@ public class PortefolioTrackerApplication {
 		PortfolioService service = new PortfolioService();
 		System.out.println("coût de revient " + service.calculateCostPrice(p));
 		System.out.println("Position actuel " + service.calculateValorisation(p));
+		System.out.println("Gaint latent " + service.calculateLatenteGain(p));
 	}
 }
