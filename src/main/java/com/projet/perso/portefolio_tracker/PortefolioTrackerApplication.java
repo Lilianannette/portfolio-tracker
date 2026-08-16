@@ -19,5 +19,6 @@ public class PortefolioTrackerApplication {
 		System.out.println("coût de revient " + service.calculateCostPrice(p));
 		System.out.println("Position actuel " + service.calculateValorisation(p));
 		System.out.println("Gaint latent " + service.calculateLatenteGain(p));
+		System.out.println("Gain réalisée " + service.calculateRealizedGain(p));
 	}
 }

@@ -37,7 +37,7 @@ public class PortfolioService {
         int quantitySold = 0;
         int quantityBought = 0;
         int quantityHeld = 0;
-        double actualPrice = calculateCostPrice(position);
+        double buyCost = calculateCostPrice(position);
         for (Transaction t : position.transactions) {
             if (t.type() == OperationType.BUY) {
                 quantityBought += t.quantity();
@@ -47,6 +47,17 @@ public class PortfolioService {
             }
             quantityHeld = quantityBought - quantitySold;
         }
-        return quantityHeld * (currentPrice - actualPrice);
+        return quantityHeld * (currentPrice - buyCost);
+    }
+
+    public double calculateRealizedGain(Position position) {
+        double realizedGain = 0;
+        double buyCost = calculateCostPrice(position);
+        for (Transaction t : position.transactions) {
+            if (t.type() == OperationType.SELL) {
+                realizedGain += (t.unitPrice() - buyCost) * t.quantity();
+            }
+        }
+        return realizedGain;
     }
 }
